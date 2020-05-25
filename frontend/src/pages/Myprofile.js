@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Candidate_Nav from "../components/Candidate_Nav";
+import Candidate_Nav from "../Candidates/Candidate_Nav";
 import { Button } from "reactstrap";
 export default class Myprofile extends Component {
   render() {

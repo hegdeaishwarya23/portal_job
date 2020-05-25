@@ -25,9 +25,11 @@ connectDB();
 
 //Route files
 const companies = require("./routes/companies");
+const addresume = require("./routes/addresume");
 const jobs = require("./routes/jobs");
 const auth = require("./routes/auth");
 const users = require("./routes/users");
+const category = require("./routes/category");
 // const reviews = require("./routes/reviews");
 
 //initialize app with express
@@ -46,6 +48,9 @@ if (process.env.NODE_ENV === "development") {
 
 // File uploading
 app.use(fileupload());
+
+//Set static folder
+app.use(express.static(path.join(__dirname, "public")));
 
 // Sanitize data
 app.use(mongoSanitize());
@@ -74,6 +79,9 @@ app.use("/api/v1/companies", companies);
 app.use("/api/v1/jobs", jobs);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
+app.use("/api/v1/category", category);
+app.use("/api/v1/addresume", addresume);
+
 // app.use("/api/v1/reviews", reviews);
 
 app.use(errorHandler);

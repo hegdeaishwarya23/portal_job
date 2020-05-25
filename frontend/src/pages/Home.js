@@ -3,10 +3,14 @@ import Hero from '../components/Hero'
 import Banner from '../components/Banner'
 import Services from '../components/Services'
 import Jobtype from '../components/Jobtype'
+import Navbar from "../components/Navbar"
+
+
 export default function Home() {
     return (
         <>
-        <Hero>
+            <Navbar />
+        <Hero> 
             <Banner title="MISDEMEANOR AND FELONY-FRIENDLY JOBS"
              subtitle="Connecting you with great companies that offer second chance
              jobs for people with criminal records.">

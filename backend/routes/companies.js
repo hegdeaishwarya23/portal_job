@@ -1,10 +1,12 @@
 const express = require("express");
+
 const {
     getCompanies,
     getCompany,
     createCompany,
     updateCompany,
     deleteCompany,
+    getMe,
     getCompaniesInRadius,
     companyPhotoUpload
 } = require("../controllers/companies");
@@ -18,7 +20,7 @@ const jobRouter = require("./jobs");
 const router = express.Router();
 
 const advancedResults = require("../middleware/advancedResults");
-const { protect, authorize } = require("../middleware/auth");
+const { protect } = require("../middleware/auth");
 
 // Re-route into other resource routers
 router.use("/:CompanyId/jobs", jobRouter);
@@ -26,19 +28,30 @@ router.use("/:CompanyId/jobs", jobRouter);
 
 // router.route("/radius/:zipcode/:distance").get(getCompaniesInRadius);
 
-router
-    .route("/:id/photo")
-    .put(protect, authorize("employer", "admin"), companyPhotoUpload);
+// router
+//     .route("/:id/photo")
+//     .put(protect,companyPhotoUpload);
 
 router
     .route("/")
-    .get(advancedResults(Company, "jobs"), getCompanies)
-    .post(protect, authorize("employer", "admin"), createCompany);
+    .get(advancedResults(Company,{path:"category"}), getCompanies)
+    .post(protect, createCompany);
+
+// router
+//     .route("/me")
+//     .get(getMe)
+//     .put(protect,updateCompany)
+//     .delete(protect,  deleteCompany);
 
 router
-    .route("/:id")
+    .route("/:companyId")
     .get(getCompany)
-    .put(protect, authorize("employer", "admin"), updateCompany)
-    .delete(protect, authorize("employer", "admin"), deleteCompany);
+    .put(protect, updateCompany)
+    .delete(protect, deleteCompany);
+
+
+router.route("/me").get(protect, getMe);
+
+router.route("/photo").post(protect, companyPhotoUpload);
 
 module.exports = router;

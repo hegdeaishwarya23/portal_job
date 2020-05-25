@@ -141,3 +141,28 @@ exports.deleteJob = asyncHandler(async (req, res, next) => {
     data: {}
   });
 });
+
+
+exports.addJob = asyncHandler(async (req, res, next) => {
+  // Add user to req,body
+  req.body.user = req.user.id;
+
+  // Check for published doctor
+  // const publishedTutor = await Job.findOne({ user: req.user.id });
+
+  // // If the user is not an admin, they can only add one doctor
+  // if (publishedTutor && req.user.role !== "admin") {
+  //   return next(
+  //     new ErrorResponse(
+  //       `The user with ID ${req.user.id} has already published a job`,
+  //       400
+  //     )
+  //   );
+  // }
+  // req.body.photo = req.body.photo;
+  const job = await Job.create(req.body);
+  res.status(200).json({
+    success: true,
+    data: job,
+  });
+});

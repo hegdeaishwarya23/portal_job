@@ -23,7 +23,7 @@ router
     }),
     getJobs
   )
-  .post(protect, authorize("employer", "admin"), addJob);
+  .post(protect, addJob);
 
 router
   .route("/:id")

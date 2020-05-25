@@ -3,7 +3,7 @@ import Hero from "../components/Hero";
 import Banner from "../components/Banner";
 import { Link } from "react-router-dom";
 import Jobtype from "../components/Jobtype";
-import Candidate_Nav from "../components/Candidate_Nav";
+import Candidate_Nav from "./Candidate_Nav";
 export default function CandidateDashboard() {
   return (
     <div>

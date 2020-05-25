@@ -59,3 +59,27 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
         data: {}
     });
 });
+
+// @desc      Get  user
+// @route     GET /api/v1/auth/users/employer
+// @access    Private/Admin
+exports.getAllUser = asyncHandler(async (req, res, next) => {
+    const user = await User.find({ role: "employer" });
+
+    res.status(200).json({
+        success: true,
+        data: user,
+    });
+});
+
+// @desc      Get  user
+// @route     GET /api/v1/auth/users/user
+// @access    Private/Admin
+exports.getUserss = asyncHandler(async (req, res, next) => {
+    const user = await User.find({ role: "user" });
+
+    res.status(200).json({
+        success: true,
+        data: user,
+    });
+});

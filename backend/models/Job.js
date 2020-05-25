@@ -4,47 +4,40 @@ const JobSchema = new mongoose.Schema({
   jobTitle: {
     type: String,
     trim: true,
-    required: [true, "Please add a job title"]
+    required: [true, "Please add a job title"],
+  },
+  jobLocation: {
+    type: String,
+    required: [true, "Please add a job location"],
   },
   category: {
-    // Array of strings
-    type: [String],
+    type: mongoose.Schema.ObjectId,
+    ref: "Category",
     required: true,
-    enum: [
-      "Kitchen jobs",
-      "Mechanic jobs",
-      "Construction jobs",
-      "Driver jobs",
-      "Labour jobs",
-      "Warehouse jobs",
-      "Others"
-    ],
   },
   jobtype: {
-    // Array of strings
-    type: [String],
-    required: true,
-    enum: ["Full time", "Part time"]
+    type: String,
+    required: [true, "Please enter the job type"],
   },
   description: {
     type: String,
-    required: [true, "Please add a description"]
+    required: [true, "Please add a description"],
   },
 
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   company: {
     type: mongoose.Schema.ObjectId,
     ref: "Company",
-    required: true
+    required: true,
   },
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
-    required: true
-  }
+    required: true,
+  },
 });
 
 // Static method to get avg of course tuitions

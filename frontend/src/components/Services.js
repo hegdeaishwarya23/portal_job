@@ -16,8 +16,6 @@ export default class Services extends Component {
                 title:"Search for the job",
                 info:"We find job opportunities that fit your interests and skills, from great companies interested in considering you."
             },
-            
-            
             {
                 icon:<GiClick/>,
                 title:"apply and get hired",
@@ -35,9 +33,9 @@ export default class Services extends Component {
                 {this.state.services.map((item,index)=>{
                     return(
                         <article key={index} className="services">
-                            <span>{item.icon}</span>
-                    <h6>{item.title}</h6>
-                    <p>{item.info}</p>
+                            <span className="animated slideInDown">{item.icon}</span>
+                            <h6 className="animated slideInRight">{item.title}</h6>
+                            <p className="animated slideInLeft">{item.info}</p>
                         </article>
                     )
                 })}

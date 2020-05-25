@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-const geocoder = require("../utils/geocoder");
+// const geocoder = require("../utils/geocoder");
 
 const CompanySchema = new mongoose.Schema(
   {
@@ -9,96 +9,92 @@ const CompanySchema = new mongoose.Schema(
       required: [true, "Please add a name"],
       unique: true,
       trim: true,
-      maxlength: [50, "Name can not be more than 50 characters"]
+      maxlength: [50, "Name can not be more than 50 characters"],
     },
     slug: String,
     email: {
       type: String,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Please add a valid email"
-      ]
+        "Please add a valid email",
+      ],
     },
-    // jobTitle: {
-    //   type: String,
-    //   required: [true, "Please add the job title"],
-    // },
-    // 
-    description: {
+
+    companyname: {
       type: String,
-      required: [true, "Please add a description"],
-      maxlength: [500, "Description can not be more than 500 characters"]
-    },
-    companyName: {
-      type: String,
-      required: [true, "Please add a name"],
+      required: [true, "Please add a company name"],
       unique: true,
       trim: true,
-      maxlength: [50, "Name can not be more than 50 characters"]
+      maxlength: [50, "Name can not be more than 50 characters"],
     },
     tagline: {
       type: String,
       required: [true, "Please add a tagline"],
-      maxlength: [50, "Taglines can not be more than 50 characters"]
+      maxlength: [50, "Taglines can not be more than 50 characters"],
     },
+    description: {
+      type: String,
+      required: [true, "Please add a description"],
+      maxlength: [500, "Description can not be more than 500 characters"],
+    },
+
     website: {
       type: String,
       match: [
         /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
-        "Please use a valid URL with HTTP or HTTPS"
+        "Please use a valid URL with HTTP or HTTPS",
       ],
     },
-    phone: {
+    contactnumber: {
       type: String,
-      maxlength: [20, "Phone number can not be longer than 20 characters"]
+      maxlength: [20, "Phone number can not be longer than 20 characters"],
     },
 
     address: {
-        type: String,
-        required: [true, "Please add an address"]
+      type: String,
+      required: [true, "Please add an address"],
     },
-    // location: {
-    //   // GeoJSON Point
-    //   type: {
-    //     type: String,
-    //     enum: ["Point"]
-    //   },
-    //   coordinates: {
-    //     type: [Number],
-    //     index: "2dsphere"
-    //   },
-    //   formattedAddress: String,
-    //   street: String,
-    //   city: String,
-    //   state: String,
-    //   zipcode: String,
-    //   country: String
-    // },
 
-    // averageRating: {
-    //   type: Number,
-    //   min: [1, "Rating must be at least 1"],
-    //   max: [10, "Rating must can not be more than 10"],
-    // },
-    // averageCost: Number,
     photo: {
       type: String,
-      default: "no-photo.jpg"
+      required:[true,"Please add a photo"]
+    },
+    jobTitle: {
+      type: String,
+      trim: true,
+      required: [true, "Please add a job title"],
+    },
+    jobLocation: {
+      type: String,
+      required: [true, "Please add a job location"],
+    },
+    subject: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    jobtype: {
+      type: String,
+      required: [true, "Please enter the job type"],
+    },
+    jobdescription: {
+      type: String,
+      required: [true, "Please add a description"],
     },
 
     createdAt: {
       type: Date,
-      default: Date.now
+      default: Date.now,
     },
     user: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
-      required: true
-    }
+      required: true,
+    },
   },
   {
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    toObject: { virtuals: true },
   }
 );
 
@@ -107,25 +103,6 @@ CompanySchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
-
-// Geocode & create location field
-// CompanySchema.pre("save", async function (next) {
-//   const loc = await geocoder.geocode(this.address);
-//   this.location = {
-//     type: "Point",
-//     coordinates: [loc[0].longitude, loc[0].latitude],
-//     formattedAddress: loc[0].formattedAddress,
-//     street: loc[0].streetName,
-//     city: loc[0].city,
-//     state: loc[0].stateCode,
-//     zipcode: loc[0].zipcode,
-//     country: loc[0].countryCode
-//   };
-
-//   //Do not save address in DB
-//     this.address = undefined;
-//     next();
-// });
 
 // Cascade delete jobs when a company is deleted
 CompanySchema.pre("remove", async function (next) {
@@ -139,7 +116,7 @@ CompanySchema.virtual("jobs", {
   ref: "Job",
   localField: "_id",
   foreignField: "company",
-  justOne: false
+  justOne: false,
 });
 
 module.exports = mongoose.model("Company", CompanySchema);
